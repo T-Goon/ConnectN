@@ -30,8 +30,8 @@ class AlphaBetaAgent(agent.Agent):
 
         return action
 
-    # TODO make a good heuristic function
-    def calc_heuristic(self, board):
+    # TODO make a good evaluation function
+    def eval_board(self, board):
         return 1
 
     # Return the max value of a board state and the action to get to that board state.
@@ -45,7 +45,7 @@ class AlphaBetaAgent(agent.Agent):
         """The maxvalue function for alpha beta search algorithm."""
         # Reached a terminal node or hit the max depth
         if(board.get_outcome() != 0) or (depth == self.max_depth):
-            return self.calc_heuristic(board), old_action
+            return self.eval_board(board), old_action
 
         v = float('-inf')
         action = None
@@ -75,7 +75,7 @@ class AlphaBetaAgent(agent.Agent):
         """The minvalue function for alpha beta search algorithm."""
         # Reached a terminal node or hit the max depth
         if(board.get_outcome() != 0) or (depth == self.max_depth):
-            return self.calc_heuristic(board), old_action
+            return self.eval_board(board), old_action
 
         v = float('inf')
         action = None
