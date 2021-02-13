@@ -34,7 +34,7 @@ class AlphaBetaAgent(agent.Agent):
     def calc_heuristic(self, board):
         return 1
 
-    # Return the max value of a board state.
+    # Return the max value of a board state and the action to get to that board state.
     # PARAM [board.Board] board: the current board state
     # PARAM [int] a: alpha value
     # PARAM [int] b: beta value
@@ -64,10 +64,11 @@ class AlphaBetaAgent(agent.Agent):
 
         return v, action
 
-    # Return the max value of a board state.
+    # Return the min value of a board state and the action to get to that state.
     # PARAM [board.Board] board: the current board state
     # PARAM [int] a: alpha value
     # PARAM [int] b: beta value
+    # PARAM [int] old_action: action taken to get to this board
     # PARAM [int] depth: max depth of the search
     # RETURN [int, int]: min value of the board state and the action to get to it
     def min_value(self, board, a, b, old_action, depth):
@@ -86,7 +87,7 @@ class AlphaBetaAgent(agent.Agent):
                 v = max
                 action = next_action
 
-            if v <= a:
+            if v <= a: # prune
                 return v, action
             else:
                 b = min(b, v)
