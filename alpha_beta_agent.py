@@ -26,6 +26,72 @@ class AlphaBetaAgent(agent.Agent):
     def go(self, brd):
         """Search for the best move (choice of column for the token)"""
         # Your code here
+        v, action = self.max_value(brd, float('-inf'), float('inf'), None, 1)
+
+        return action
+
+    # TODO make a good heuristic function
+    def calc_heuristic(self, board):
+        return 1
+
+    # Return the max value of a board state.
+    # PARAM [board.Board] board: the current board state
+    # PARAM [int] a: alpha value
+    # PARAM [int] b: beta value
+    # PARAM [int] old_action: action taken to get to this board
+    # PARAM [int] depth: max depth of the search
+    # RETURN [int, int]: max value of the board state and the action to get to it
+    def max_value(self, board, a, b, old_action, depth):
+        """The maxvalue function for alpha beta search algorithm."""
+        # Reached a terminal node or hit the max depth
+        if(board.get_outcome() != 0) or (depth == self.max_depth):
+            return self.calc_heuristic(board), old_action
+
+        v = float('-inf')
+        action = None
+        # Go through all possible next actions in current state
+        for next_board in self.get_successors(board):
+            # alpha beta pruning logic
+            min, next_action = self.min_value(next_board[0], a, b, next_board[1], depth+1)
+            if min > v:
+                v = min
+                action = next_action
+
+            if v >= b: # prune
+                return v, action
+            else:
+                a = max(a, v)
+
+        return v, action
+
+    # Return the max value of a board state.
+    # PARAM [board.Board] board: the current board state
+    # PARAM [int] a: alpha value
+    # PARAM [int] b: beta value
+    # PARAM [int] depth: max depth of the search
+    # RETURN [int, int]: min value of the board state and the action to get to it
+    def min_value(self, board, a, b, old_action, depth):
+        """The minvalue function for alpha beta search algorithm."""
+        # Reached a terminal node or hit the max depth
+        if(board.get_outcome() != 0) or (depth == self.max_depth):
+            return self.calc_heuristic(board), old_action
+
+        v = float('inf')
+        action = None
+        # Go through all possible next actions in current state
+        for next_board in self.get_successors(board):
+            # alpha beta pruning logic
+            max, next_action = self.max_value(next_board[0], a, b, next_board[1], depth+1)
+            if max < v:
+                v = max
+                action = next_action
+
+            if v <= a:
+                return v, action
+            else:
+                b = min(b, v)
+
+        return v, action
 
     # Get the successors of the given board.
     #
