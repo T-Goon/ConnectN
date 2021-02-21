@@ -60,21 +60,25 @@ class AlphaBetaAgent(agent.Agent):
 
         return action
 
+    # Gets the score of a non-terminal board.
+    # PARAM [board.Board] board: The current state of the board.
+    # PARAM [int] player: The value of a player's token. [1|2]
+    # PARAM [int] other: The value of the opponent's token. [1|2]
+    # RETURN [int]: Summed score for tokens t on the board.
     def new_eval_board(self, board, player, other):
-        return self.get_board_score(board, player, other)
-        # return 0
-
-    def get_board_score(self, board, t, other):
         """Caluclate a score for the entire board. """
-
 
         # calc for both you and oponent
         sum = 0
-        sum += self.count_all(board, t)
+        sum += self.count_all(board, player)
         sum -= self.count_all(board, other)
 
         return sum
 
+    # Gets the score of all tokens on the board.
+    # PARAM [board.Board] board: The current state of the board.
+    # PARAM [int] t: The value of a player's token. [1|2]
+    # RETURN [int]: Summed score for tokens t on the board.
     def count_all(self, board, t):
         """ Get the sum of all tokens on the board """
 
@@ -88,6 +92,12 @@ class AlphaBetaAgent(agent.Agent):
 
         return sum
 
+    # Gets the score of a token in all directions.
+    # PARAM [board.Board] board: The current state of the board.
+    # PARAM [int] x: The column of the token on the board.
+    # PARAM [int] y: The row of the token on the board.
+    # PARAM [int] t: The value of a player's token. [1|2]
+    # RETURN [int]: Summed score for all 8 directions of a token.
     def tokenScore(self, board, x, y, t):
         """ Look in all directions for 0 tokens and t tokens """
 
@@ -104,7 +114,15 @@ class AlphaBetaAgent(agent.Agent):
 
         return sum
 
-    def countLine(self, board, x, y, dx, dy, t): # depth 5 100, 92
+    # Gets the score of a token in one direction.
+    # PARAM [board.Board] board: The current state of the board.
+    # PARAM [int] x: The column of the token on the board.
+    # PARAM [int] y: The row of the token on the board.
+    # PARAM [int] dx: The x direction to look in. [-1|0|1]
+    # PARAM [int] dy: The y direction to look in. [-1|0|1]
+    # PARAM [int] t: The value of a player's token. [1|2]
+    # RETURN [int]: Summed score for a single direction of a token.
+    def countLine(self, board, x, y, dx, dy, t):
             """ Count the score of a token in one direction """
             sum = 0
             b = board.board
@@ -118,9 +136,9 @@ class AlphaBetaAgent(agent.Agent):
                     if(row < 0 or col < 0):
                         return 0
 
-                    if (t == b[row][col]):
+                    if (t == b[row][col]): # found your token
                         sum += 2
-                    elif (0 == b[row][col]):
+                    elif (0 == b[row][col]): # empty space
                         sum += 1
                     else:
                         # discard when you encounter a oposing token
@@ -198,4 +216,4 @@ class AlphaBetaAgent(agent.Agent):
             succ.append((nb,col))
         return succ
 
-THE_AGENT = AlphaBetaAgent("Group20", 4)
+THE_AGENT = AlphaBetaAgent("Group20", 6)
