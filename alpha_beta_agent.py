@@ -145,8 +145,6 @@ class AlphaBetaAgent(agent.Agent):
     # PARAM [int] old_action: The column played to reach this board state
     # PARAM [int] player: The player to run the search for [1|2]
     def negamax(self, board, a, b, old_action, depth, player):
-        self.nodes += 1
-
         # Cache board outcome, since get_outcome is somewhat expensive to calculate.
         winner = board.get_outcome()
         other_player = (player % 2) + 1
