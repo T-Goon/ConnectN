@@ -155,10 +155,10 @@ class AlphaBetaAgent(agent.Agent):
 
         # Check for immediate win
         if winner == player:
-            return 100 / depth, old_action
+            return 1000000 / depth, old_action
         # Check for immediate loss
         if winner == other_player:
-            return -100 / depth, old_action
+            return -1000000 / depth, old_action
         # Max depth, or no successors (tie)
         if depth == self.max_depth or len(successors) == 0:
             return self.get_board_score(board, player, other_player), old_action
